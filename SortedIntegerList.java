@@ -1,11 +1,9 @@
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 public class SortedIntegerList {
 
-    private final LinkedList<Integer> data;
+    private LinkedList<Integer> data;
     private final boolean duplicate;
 
     public SortedIntegerList(boolean duplicate){
@@ -46,7 +44,6 @@ public class SortedIntegerList {
                 return;
             }
         }
-
     }
 
     public Integer size(){return this.data.size();}
@@ -61,15 +58,6 @@ public class SortedIntegerList {
      return sb.toString();
   }
 
-  @Override
-    /*public boolean equals(Object o){
-        if(o instanceof SortedIntegerList){
-            SortedIntegerList sl = (SortedIntegerList)o;
-            return this.duplicate == sl.duplicate & this.data.equals(sl.data);
-        }
-        else
-            return false;
-  }*/
 
     public boolean equals(Object o) {
         if(this == o)
@@ -77,11 +65,10 @@ public class SortedIntegerList {
 
       if (o instanceof SortedIntegerList) {
           SortedIntegerList sl = (SortedIntegerList) o;
-          ListIterator<Integer> it1 = this.data.listIterator();
-          ListIterator<Integer> it2 = sl.data.listIterator();
           if(sl.data.size() != this.data.size() | this.duplicate != sl.duplicate)
               return false;
-
+          ListIterator<Integer> it1 = this.data.listIterator();
+          ListIterator<Integer> it2 = sl.data.listIterator();;
           while(it1.hasNext()){
               if((Integer)it1.next() != (Integer)it2.next())
                   return false;
@@ -90,6 +77,56 @@ public class SortedIntegerList {
       }
       else
           return false;
+  }
+
+    public SortedIntegerList( SortedIntegerList list){
+
+        duplicate = list.duplicate;
+        this.data = new LinkedList<Integer>(list.data);
+    }
+
+ public SortedIntegerList intersection (SortedIntegerList list) {
+     SortedIntegerList res = new SortedIntegerList(true);
+     SortedIntegerList listCopy = new SortedIntegerList(list);
+     ListIterator<Integer> it1 = this.data.listIterator();
+
+     while(it1.hasNext()) {
+         int tmp = it1.next();
+         ListIterator<Integer> it2 = listCopy.data.listIterator();
+         while(it2.hasNext()){
+             int tmp2 = it2.next();
+             if (tmp2 == tmp) {
+                 res.add(tmp);
+                 listCopy.remove(tmp);
+                 break;
+             }
+         }
+     }
+
+     return res;
+ }
+  public SortedIntegerList withoutIntersections(SortedIntegerList sl){
+        SortedIntegerList res = new SortedIntegerList(this.duplicate);
+        SortedIntegerList intersection = this.intersection(sl);
+        SortedIntegerList listCopy = new SortedIntegerList(intersection);
+        ListIterator<Integer> itThis = this.data.listIterator();
+        ListIterator<Integer> itArg = sl.data.listIterator();
+
+     while(itThis.hasNext()){
+          Integer tmp = (Integer) itThis.next();
+          if(!listCopy.data.contains(tmp)) {
+              res.add(tmp);
+          }
+          else listCopy.remove(tmp);
+        }
+      while (itArg.hasNext()){
+          Integer tmp = (Integer) itArg.next();
+          if(!intersection.data.contains(tmp)) {
+              res.add(tmp);
+          }
+          else intersection.remove(tmp);
+      }
+        return res;
   }
 
 

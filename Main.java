@@ -6,24 +6,23 @@ public class Main {
 
     public static void main(String[] args){
         SortedIntegerList sl1 = new SortedIntegerList(true);
-        sl1.add(12);
-        sl1.add(3);
-        sl1.add(-4);
-        sl1.add(3);
-        sl1.add(-18);
+        sl1.add(5);
+        sl1.add(2);
+        sl1.add(5);
         sl1.add(7);
-        System.out.println(sl1);
-        sl1.remove(3);
-        System.out.println("Resulting list after removing:\n" + sl1);
+        sl1.add(4);
+        sl1.add(5);
+        sl1.add(8);
+        System.out.println("First list:\n" + sl1);
         SortedIntegerList sl2 = new SortedIntegerList(true);
-        sl2.add(12);
+        sl2.add(9);
+        sl2.add(8);
         sl2.add(1);
-        sl2.add(-4);
-        sl2.add(3);
-        sl2.add(-18);
-        sl2.add(7);
-        System.out.println(sl1.equals(sl2));
-
+        sl2.add(5);
+        sl2.add(5);
+        sl2.add(2);
+        System.out.println("Second list:\n" + sl2);
+        System.out.println("Result list without intersections:\n" + sl1.withoutIntersections(sl2));
     }
 
 }
